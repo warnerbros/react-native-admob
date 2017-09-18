@@ -4,6 +4,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
@@ -27,8 +30,19 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactViewGro
 
   public static final String PROP_BANNER_SIZE = "bannerSize";
   public static final String PROP_AD_UNIT_ID = "adUnitID";
+  public static final String PROP_TARGETING = "targeting";
   public static final String PROP_TEST_DEVICE_ID = "testDeviceID";
 
+  private static final String TARGETING_CUSTOM_TARGETING = "customTargeting";
+  private static final String TARGETING_CATEGORY_EXCLUSIONS = "categoryExclusions";
+  private static final String TARGETING_KEYWORDS = "keywords";
+  private static final String TARGETING_GENDER = "gender";
+  private static final String TARGETING_BIRTHDAY = "birthday";
+  private static final String TARGETING_CHILD_DIRECTED_TREATMENT = "childDirectedTreatment";
+  private static final String TARGETING_CONTENT_URL = "contentURL";
+  private static final String TARGETING_PUBLISHER_PROVIDED_ID = "publisherProviderID";
+
+  private ReadableMap targeting;
   private String testDeviceID = null;
 
   public enum Events {
@@ -202,6 +216,11 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactViewGro
     loadAd(newAdView);
   }
 
+  @ReactProp(name = PROP_TARGETING)
+  public void setTargeting(final ReactViewGroup view, final ReadableMap targeting) {
+    this.targeting = targeting;
+  }
+
   @ReactProp(name = PROP_TEST_DEVICE_ID)
   public void setPropTestDeviceID(final ReactViewGroup view, final String testDeviceID) {
     this.testDeviceID = testDeviceID;
@@ -210,11 +229,49 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactViewGro
   private void loadAd(final PublisherAdView adView) {
     if (adView.getAdSizes() != null && adView.getAdUnitId() != null) {
       PublisherAdRequest.Builder adRequestBuilder = new PublisherAdRequest.Builder();
-      if (testDeviceID != null){
+      if (testDeviceID != null) {
         if (testDeviceID.equals("EMULATOR")) {
           adRequestBuilder = adRequestBuilder.addTestDevice(PublisherAdRequest.DEVICE_ID_EMULATOR);
         } else {
           adRequestBuilder = adRequestBuilder.addTestDevice(testDeviceID);
+        }
+      }
+      if (targeting != null) {
+        if (targeting.hasKey(TARGETING_CUSTOM_TARGETING)) {
+          ReadableMap customTargeting = targeting.getMap(TARGETING_CUSTOM_TARGETING);
+          ReadableMapKeySetIterator iterator = customTargeting.keySetIterator();
+          while (iterator.hasNextKey()) {
+            String key = iterator.nextKey();
+            adRequestBuilder.addCustomTargeting(key, customTargeting.getString(key));
+          }
+        }
+
+        if (targeting.hasKey(TARGETING_CATEGORY_EXCLUSIONS)) {
+          ReadableArray categoryExclusions = targeting.getArray(TARGETING_CATEGORY_EXCLUSIONS);
+          for (int i = 0; i < categoryExclusions.size(); i++) {
+            adRequestBuilder.addCategoryExclusion(categoryExclusions.getString(i));
+          }
+        }
+
+        if (targeting.hasKey(TARGETING_KEYWORDS)) {
+          ReadableArray keywords = targeting.getArray(TARGETING_KEYWORDS);
+          for (int i = 0; i < keywords.size(); i++) {
+            adRequestBuilder.addKeyword(keywords.getString(i));
+          }
+        }
+
+        // TODO: gender, birthday
+
+        if (targeting.hasKey(TARGETING_CHILD_DIRECTED_TREATMENT)) {
+          adRequestBuilder.tagForChildDirectedTreatment(targeting.getBoolean(TARGETING_CHILD_DIRECTED_TREATMENT));
+        }
+
+        if (targeting.hasKey(TARGETING_CONTENT_URL)) {
+          adRequestBuilder.setContentUrl(targeting.getString(TARGETING_CONTENT_URL));
+        }
+
+        if (targeting.hasKey(TARGETING_PUBLISHER_PROVIDED_ID)) {
+          adRequestBuilder.setPublisherProvidedId(targeting.getString(TARGETING_PUBLISHER_PROVIDED_ID));
         }
       }
       PublisherAdRequest adRequest = adRequestBuilder.build();
