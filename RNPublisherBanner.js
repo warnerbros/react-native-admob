@@ -5,7 +5,6 @@ import {
   View,
   NativeEventEmitter,
 } from 'react-native';
-import { string, func, arrayOf, bool, object, shape, instanceOf, oneOf, number } from 'prop-types';
 
 const RNBanner = requireNativeComponent('RNAdMobDFP', PublisherBanner);
 
@@ -25,7 +24,7 @@ export default class PublisherBanner extends React.Component {
   }
 
   render() {
-    const { adUnitID, testDeviceID, bannerSize, style, didFailToReceiveAdWithError,admobDispatchAppEvent } = this.props;
+    const { adUnitID, testDeviceID, bannerSize, targeting, style, didFailToReceiveAdWithError, admobDispatchAppEvent } = this.props;
     return (
       <View style={this.props.style}>
         <RNBanner
@@ -40,7 +39,8 @@ export default class PublisherBanner extends React.Component {
           onAdmobDispatchAppEvent={(event) => admobDispatchAppEvent(event)}
           testDeviceID={testDeviceID}
           adUnitID={adUnitID}
-          bannerSize={bannerSize} />
+          bannerSize={bannerSize}
+          targeting={targeting} />
       </View>
     );
   }
@@ -85,59 +85,59 @@ PublisherBanner.propTypes = {
   adViewWillLeaveApplication: React.PropTypes.func,
   admobDispatchAppEvent: React.PropTypes.func,
 
-  targeting: shape({
+  targeting: React.PropTypes.shape({
     /**
      * Arbitrary object of custom targeting information.
      */
-    customTargeting: object,
+    customTargeting: React.PropTypes.object,
 
     /**
      * Array of exclusion labels.
      */
-    categoryExclusions: arrayOf(string),
+    categoryExclusions: React.PropTypes.arrayOf(React.PropTypes.string),
 
     /**
      * Array of keyword strings.
      */
-    keywords: arrayOf(string),
+    keywords: React.PropTypes.arrayOf(React.PropTypes.string),
 
     /**
      * When using backfill or an SDK mediation creative, gender can be supplied
      * in the ad request for targeting purposes.
      */
-    gender: oneOf(['unknown', 'male', 'female']),
+    gender: React.PropTypes.oneOf(['unknown', 'male', 'female']),
 
     /**
      * When using backfill or an SDK mediation creative, birthday can be supplied
      * in the ad request for targeting purposes.
      */
-    birthday: instanceOf(Date),
+    birthday: React.PropTypes.instanceOf(Date),
 
     /**
      * Indicate that you want Google to treat your content as child-directed.
      */
-    childDirectedTreatment: bool,
+    childDirectedTreatment: React.PropTypes.bool,
 
     /**
      * Applications that monetize content matching a webpage's content may pass
      * a content URL for keyword targeting.
      */
-    contentURL: string,
+    contentURL: React.PropTypes.string,
 
     /**
      * You can set a publisher provided identifier (PPID) for use in frequency
      * capping, audience segmentation and targeting, sequential ad rotation, and
      * other audience-based ad delivery controls across devices.
      */
-    publisherProvidedID: string,
+    publisherProvidedID: React.PropTypes.string,
 
     /**
      * The user’s current location may be used to deliver more relevant ads.
      */
-    location: shape({
-      latitude: number,
-      longitude: number,
-      accuracy: number,
+    location: React.PropTypes.shape({
+      latitude: React.PropTypes.number,
+      longitude: React.PropTypes.number,
+      accuracy: React.PropTypes.number,
     }),
   }),
 
