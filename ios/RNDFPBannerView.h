@@ -14,7 +14,7 @@
 @property (nonatomic, copy) NSString *adUnitID;
 @property (nonatomic, copy) NSString *testDeviceID;
 @property (nonatomic, copy) NSDictionary *targeting;
-@property (nonatomic) Bool targetingDisabled;
+@property (nonatomic) BOOL targetingDisabled;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onSizeChange;
 @property (nonatomic, copy) RCTBubblingEventBlock onAdmobDispatchAppEvent;
