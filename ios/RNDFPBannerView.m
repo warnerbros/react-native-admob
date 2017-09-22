@@ -154,10 +154,10 @@ didReceiveAppEvent:(NSString *)name
     }
 }
 
-- (void)setTargetingOptions:(NSDictionary *)targetingOptions
+- (void)setTargeting:(NSDictionary *)targeting
 {
-    if(![targetingOptions isEqualToDictionary:_targeting]) {
-        _targeting = targetingOptions;
+    if(![targeting isEqualToDictionary:_targeting]) {
+        _targeting = targeting;
         if (_bannerView) {
             [_bannerView removeFromSuperview];
         }
