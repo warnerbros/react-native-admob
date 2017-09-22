@@ -143,7 +143,7 @@ didReceiveAppEvent:(NSString *)name
     }
 }
 
-- (void)setTargetingDisabled:(Bool *)targetingDisabled
+- (void)setTargetingDisabled:(Bool)targetingDisabled
 {
     if (targetingDisabled != _targetingDisabled) {
         _targetingDisabled = targetingDisabled;
