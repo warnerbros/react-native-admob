@@ -13,7 +13,7 @@
 @property (nonatomic, copy) NSString *bannerSize;
 @property (nonatomic, copy) NSString *adUnitID;
 @property (nonatomic, copy) NSString *testDeviceID;
-@property (nonatomic, copy) NSDictionary *targeting;
+@property (nonatomic, copy) NSDictionary *targetingOptions;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onSizeChange;
 @property (nonatomic, copy) RCTBubblingEventBlock onAdmobDispatchAppEvent;

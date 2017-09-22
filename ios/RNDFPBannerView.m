@@ -75,40 +75,40 @@
             }
         }
         
-        if (_targeting != nil) {
-            NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
+        if (_targetingOptions != nil) {
+            NSDictionary *customTargeting = [_targetingOptions objectForKey:@"customTargeting"];
             if (customTargeting != nil) {
                 request.customTargeting = customTargeting;
             }
-            NSArray *categoryExclusions = [_targeting objectForKey:@"categoryExclusions"];
+            NSArray *categoryExclusions = [_targetingOptions objectForKey:@"categoryExclusions"];
             if (categoryExclusions != nil) {
                 request.categoryExclusions = categoryExclusions;
             }
-            NSArray *keywords = [_targeting objectForKey:@"keywords"];
+            NSArray *keywords = [_targetingOptions objectForKey:@"keywords"];
             if (keywords != nil) {
                 request.keywords = keywords;
             }
-            NSString *gender = [_targeting objectForKey:@"gender"];
+            NSString *gender = [_targetingOptions objectForKey:@"gender"];
             if (gender != nil) {
                 request.gender = [RCTConvert GADGender:gender];
             }
-            NSDate *birthday = [_targeting objectForKey:@"birthday"];
+            NSDate *birthday = [_targetingOptions objectForKey:@"birthday"];
             if (birthday != nil) {
                 request.birthday = [RCTConvert NSDate:birthday];
             }
-            id childDirectedTreatment = [_targeting objectForKey:@"childDirectedTreatment"];
+            id childDirectedTreatment = [_targetingOptions objectForKey:@"childDirectedTreatment"];
             if (childDirectedTreatment != nil) {
                 [request tagForChildDirectedTreatment:childDirectedTreatment];
             }
-            NSString *contentURL = [_targeting objectForKey:@"contentURL"];
+            NSString *contentURL = [_targetingOptions objectForKey:@"contentURL"];
             if (contentURL != nil) {
                 request.contentURL = contentURL;
             }
-            NSString *publisherProvidedID = [_targeting objectForKey:@"publisherProvidedID"];
+            NSString *publisherProvidedID = [_targetingOptions objectForKey:@"publisherProvidedID"];
             if (publisherProvidedID != nil) {
                 request.publisherProvidedID = publisherProvidedID;
             }
-            NSDictionary *location = [_targeting objectForKey:@"location"];
+            NSDictionary *location = [_targetingOptions objectForKey:@"location"];
             if (location != nil) {
                 CGFloat latitude = [[location objectForKey:@"latitude"] doubleValue];
                 CGFloat longitude = [[location objectForKey:@"longitude"] doubleValue];
