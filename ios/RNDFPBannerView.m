@@ -51,7 +51,7 @@
 }
 
 -(void)loadBanner {
-    if (_adUnitID && _bannerSize) {
+    if (_adUnitID && _bannerSize && _onSizeChange && (_targetingDisabled || _targeting != nil)) {
         GADAdSize size = [self getAdSizeFromString:_bannerSize];
         _bannerView = [[DFPBannerView alloc] initWithAdSize:size];
         [_bannerView setAppEventDelegate:self]; //added Admob event dispatch listener
@@ -121,7 +121,6 @@
     }
 }
 
-
 - (void)adView:(DFPBannerView *)banner
 didReceiveAppEvent:(NSString *)name
       withInfo:(NSString *)info {
@@ -137,6 +136,39 @@ didReceiveAppEvent:(NSString *)name
 {
     if(![bannerSize isEqual:_bannerSize]) {
         _bannerSize = bannerSize;
+        if (_bannerView) {
+            [_bannerView removeFromSuperview];
+        }
+        [self loadBanner];
+    }
+}
+
+- (void)setTargetingDisabled:(Bool *)targetingDisabled
+{
+    if (targetingDisabled != _targetingDisabled) {
+        _targetingDisabled = targetingDisabled;
+        if (_bannerView) {
+            [_bannerView removeFromSuperview];
+        }
+        [self loadBanner];
+    }
+}
+
+- (void)setTargetingOptions:(NSDictionary *)targetingOptions
+{
+    if(![targetingOptions isEqualToDictionary:_targeting]) {
+        _targeting = targetingOptions;
+        if (_bannerView) {
+            [_bannerView removeFromSuperview];
+        }
+        [self loadBanner];
+    }
+}
+
+- (void)setOnSizeChange:(RCTBubblingEventBlock)onSizeChange
+{
+    if(onSizeChange != _onSizeChange) {
+        _onSizeChange = onSizeChange;
         if (_bannerView) {
             [_bannerView removeFromSuperview];
         }
