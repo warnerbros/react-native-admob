@@ -33,6 +33,8 @@ export default class PublisherBanner extends React.Component {
       didFailToReceiveAdWithError, 
       admobDispatchAppEvent,
       targetingDisabled,
+			bannerWidth,
+			bannerHeight,
     } = this.props;
     return (
       <View style={this.props.style}>
@@ -51,6 +53,8 @@ export default class PublisherBanner extends React.Component {
           bannerSize={bannerSize}
           targeting={targeting}
           targetingDisabled={targetingDisabled}
+					bannerWidth={bannerWidth}
+					bannerHeight={bannerHeight}
         />
       </View>
     );

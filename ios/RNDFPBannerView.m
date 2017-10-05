@@ -14,6 +14,7 @@
 
 @implementation RNDFPBannerView {
     DFPBannerView  *_bannerView;
+    GADAdSize _kGADAdCustomSize;
 }
 
 - (void)insertReactSubview:(UIView *)view atIndex:(NSInteger)atIndex
@@ -51,16 +52,21 @@
 }
 
 -(void)loadBanner {
-    if (_adUnitID && _bannerSize && _onSizeChange && (_targetingDisabled || _targeting != nil)) {
-        GADAdSize size = [self getAdSizeFromString:_bannerSize];
+    if (_adUnitID && (_bannerSize || (_bannerHeight && _bannerWidth)) && _onSizeChange && (_targetingDisabled || _targeting != nil)) {
+        GADAdSize size;
+        if (_bannerHeight && _bannerWidth) {
+            size = _kGADAdCustomSize;
+        } else {
+            size = [self getAdSizeFromString:_bannerSize];
+        }
         _bannerView = [[DFPBannerView alloc] initWithAdSize:size];
         [_bannerView setAppEventDelegate:self]; //added Admob event dispatch listener
         if(!CGRectEqualToRect(self.bounds, _bannerView.bounds)) {
             if (self.onSizeChange) {
                 self.onSizeChange(@{
-                    @"width": [NSNumber numberWithFloat: _bannerView.bounds.size.width],
-                    @"height": [NSNumber numberWithFloat: _bannerView.bounds.size.height]
-                });
+                                    @"width": [NSNumber numberWithFloat: _bannerView.bounds.size.width],
+                                    @"height": [NSNumber numberWithFloat: _bannerView.bounds.size.height]
+                                    });
             }
         }
         _bannerView.delegate = self;
@@ -116,7 +122,7 @@
                 [request setLocationWithLatitude:latitude longitude:longitude accuracy:accuracy];
             }
         }
-
+        
         [_bannerView loadRequest:request];
     }
 }
@@ -132,14 +138,49 @@ didReceiveAppEvent:(NSString *)name
     }
 }
 
+- (void)setCustomBannerSize
+{
+    double width = _bannerWidth;
+    double height = _bannerHeight;
+    _kGADAdCustomSize = GADAdSizeFromCGSize(CGSizeMake(width, height));
+}
+
 - (void)setBannerSize:(NSString *)bannerSize
 {
-    if(![bannerSize isEqual:_bannerSize]) {
+    if(![bannerSize isEqual:_bannerSize] && ![bannerSize isEqual:@"custom"]) {
         _bannerSize = bannerSize;
         if (_bannerView) {
             [_bannerView removeFromSuperview];
         }
         [self loadBanner];
+    }
+}
+
+- (void)setBannerWidth:(NSInteger)bannerWidth
+{
+    if(bannerWidth != _bannerWidth) {
+        _bannerWidth = bannerWidth;
+        if (_bannerHeight && _bannerWidth) {
+            if (_bannerView) {
+                [_bannerView removeFromSuperview];
+            }
+            [self setCustomBannerSize];
+            [self loadBanner];
+        }
+    }
+}
+
+- (void)setBannerHeight:(NSInteger)bannerHeight
+{
+    if(bannerHeight != _bannerHeight) {
+        _bannerHeight = bannerHeight;
+        if (_bannerHeight && _bannerHeight) {
+            if (_bannerView) {
+                [_bannerView removeFromSuperview];
+            }
+            [self setCustomBannerSize];
+            [self loadBanner];
+        }
     }
 }
 
@@ -183,7 +224,7 @@ didReceiveAppEvent:(NSString *)name
         if (_bannerView) {
             [_bannerView removeFromSuperview];
         }
-
+        
         [self loadBanner];
     }
 }
@@ -201,7 +242,7 @@ didReceiveAppEvent:(NSString *)name
 -(void)layoutSubviews
 {
     [super layoutSubviews ];
-
+    
     _bannerView.frame = CGRectMake(
                                    self.bounds.origin.x,
                                    self.bounds.origin.x,
