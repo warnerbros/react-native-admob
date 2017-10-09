@@ -35,6 +35,8 @@ export default class PublisherBanner extends React.Component {
       targetingDisabled,
 			bannerWidth,
 			bannerHeight,
+			adSizes,
+			onAdViewWillChangeAdSizeTo,
     } = this.props;
     return (
       <View style={this.props.style}>
@@ -55,6 +57,8 @@ export default class PublisherBanner extends React.Component {
           targetingDisabled={targetingDisabled}
 					bannerWidth={bannerWidth}
 					bannerHeight={bannerHeight}
+					adSizes={adSizes}
+					onAdViewWillChangeAdSizeTo={onAdViewWillChangeAdSizeTo}
         />
       </View>
     );
