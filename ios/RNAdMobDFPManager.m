@@ -28,6 +28,9 @@ RCT_EXPORT_VIEW_PROPERTY(bannerSize, NSString);
 RCT_EXPORT_VIEW_PROPERTY(adUnitID, NSString);
 RCT_EXPORT_VIEW_PROPERTY(testDeviceID, NSString);
 RCT_EXPORT_VIEW_PROPERTY(targeting, NSDictionary);
+RCT_EXPORT_VIEW_PROPERTY(bannerHeight, NSInteger);
+RCT_EXPORT_VIEW_PROPERTY(bannerWidth, NSInteger);
+RCT_EXPORT_VIEW_PROPERTY(adSizes, NSArray);
 RCT_EXPORT_VIEW_PROPERTY(targetingDisabled, BOOL);
 
 RCT_EXPORT_VIEW_PROPERTY(onSizeChange, RCTBubblingEventBlock)
@@ -38,5 +41,6 @@ RCT_EXPORT_VIEW_PROPERTY(onAdViewWillPresentScreen, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAdViewWillDismissScreen, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAdViewDidDismissScreen, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAdViewWillLeaveApplication, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onAdViewWillChangeAdSizeTo, RCTBubblingEventBlock)
 
 @end
