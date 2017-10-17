@@ -104,6 +104,11 @@ PublisherBanner.propTypes = {
   adViewWillLeaveApplication: React.PropTypes.func,
   admobDispatchAppEvent: React.PropTypes.func,
 
+	/**
+	 * Tell component if targeting is enabled
+	 * so it doesn't wait for targeting prop to be set.
+	 */
+
   targetingDisabled: React.PropTypes.bool,
 
   targeting: React.PropTypes.shape({
@@ -161,6 +166,21 @@ PublisherBanner.propTypes = {
       accuracy: React.PropTypes.number,
     }),
   }),
+
+	/**
+	 * Array of valid ad sizes.
+	 * First element is width and height is second.
+	 * const size1 = [150, 50];
+	 * const size2 = [234, 60];
+	 * adSizes = [size1, size2];
+	 */
+	adSizes: React.PropTypes.arrayOf(React.PropTypes.arrayOf(React.PropTypes.number)),
+
+	/**
+	 * Called when ad will change its size.
+	 * Usefull when using array of custom sizes.
+	 */
+	onAdViewWillChangeAdSizeTo: React.PropTypes.func,
 
   ...View.propTypes,
 };

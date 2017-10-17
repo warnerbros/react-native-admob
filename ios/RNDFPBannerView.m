@@ -62,6 +62,7 @@
         _bannerView = [[DFPBannerView alloc] initWithAdSize:size];
         if (_adSizes) {
             _bannerView.validAdSizes = [self getValidAdSizes];
+            _bannerView.adSizeDelegate = self;
         }
         [_bannerView setAppEventDelegate:self]; //added Admob event dispatch listener
         if(!CGRectEqualToRect(self.bounds, _bannerView.bounds)) {
@@ -331,7 +332,7 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
 #pragma mark - GADAdSizeDelegate
 
 /// Called before the ad view changes to the new size.
-- (void)adView:(GADBannerView *)bannerView willChangeAdSizeTo:(GADAdSize)size {
+- (void)adView:(nonnull GADBannerView *)bannerView willChangeAdSizeTo:(GADAdSize)size {
     // bannerView calls this method on its adSizeDelegate object before the banner updates it size,
     // allowing the application to adjust any views that may be affected by the new ad size.
     CGSize cgSize = CGSizeFromGADAdSize(size);
