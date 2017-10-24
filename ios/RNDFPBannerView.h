@@ -8,7 +8,7 @@
 
 @class RCTEventDispatcher;
 
-@interface RNDFPBannerView : UIView <GADBannerViewDelegate>
+@interface RNDFPBannerView : UIView <GADBannerViewDelegate, GADAdSizeDelegate>
 
 @property (nonatomic, copy) NSString *bannerSize;
 @property (nonatomic, copy) NSString *adUnitID;
