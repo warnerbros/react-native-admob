@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   NativeModules,
   requireNativeComponent,
@@ -24,13 +25,13 @@ export default class PublisherBanner extends React.Component {
   }
 
   render() {
-    const { 
+    const {
       adUnitID,
       testDeviceID,
       bannerSize,
       targeting,
       style,
-      didFailToReceiveAdWithError, 
+      didFailToReceiveAdWithError,
       admobDispatchAppEvent,
       targetingDisabled,
 			bannerWidth,
@@ -81,89 +82,89 @@ PublisherBanner.propTypes = {
    *
    * banner is default
    */
-  bannerSize: React.PropTypes.string,
+  bannerSize: PropTypes.string,
 
   /**
    * AdMob ad unit ID
    */
-  adUnitID: React.PropTypes.string,
+  adUnitID: PropTypes.string,
 
   /**
    * Test device ID
    */
-  testDeviceID: React.PropTypes.string,
+  testDeviceID: PropTypes.string,
 
   /**
    * AdMob iOS library events
    */
-  adViewDidReceiveAd: React.PropTypes.func,
-  didFailToReceiveAdWithError: React.PropTypes.func,
-  adViewWillPresentScreen: React.PropTypes.func,
-  adViewWillDismissScreen: React.PropTypes.func,
-  adViewDidDismissScreen: React.PropTypes.func,
-  adViewWillLeaveApplication: React.PropTypes.func,
-  admobDispatchAppEvent: React.PropTypes.func,
+  adViewDidReceiveAd: PropTypes.func,
+  didFailToReceiveAdWithError: PropTypes.func,
+  adViewWillPresentScreen: PropTypes.func,
+  adViewWillDismissScreen: PropTypes.func,
+  adViewDidDismissScreen: PropTypes.func,
+  adViewWillLeaveApplication: PropTypes.func,
+  admobDispatchAppEvent: PropTypes.func,
 
 	/**
 	 * Tell component if targeting is enabled
 	 * so it doesn't wait for targeting prop to be set.
 	 */
 
-  targetingDisabled: React.PropTypes.bool,
+  targetingDisabled: PropTypes.bool,
 
-  targeting: React.PropTypes.shape({
+  targeting: PropTypes.shape({
     /**
      * Arbitrary object of custom targeting information.
      */
-    customTargeting: React.PropTypes.object,
+    customTargeting: PropTypes.object,
 
     /**
      * Array of exclusion labels.
      */
-    categoryExclusions: React.PropTypes.arrayOf(React.PropTypes.string),
+    categoryExclusions: PropTypes.arrayOf(PropTypes.string),
 
     /**
      * Array of keyword strings.
      */
-    keywords: React.PropTypes.arrayOf(React.PropTypes.string),
+    keywords: PropTypes.arrayOf(PropTypes.string),
 
     /**
      * When using backfill or an SDK mediation creative, gender can be supplied
      * in the ad request for targeting purposes.
      */
-    gender: React.PropTypes.oneOf(['unknown', 'male', 'female']),
+    gender: PropTypes.oneOf(['unknown', 'male', 'female']),
 
     /**
      * When using backfill or an SDK mediation creative, birthday can be supplied
      * in the ad request for targeting purposes.
      */
-    birthday: React.PropTypes.instanceOf(Date),
+    birthday: PropTypes.instanceOf(Date),
 
     /**
      * Indicate that you want Google to treat your content as child-directed.
      */
-    childDirectedTreatment: React.PropTypes.bool,
+    childDirectedTreatment: PropTypes.bool,
 
     /**
      * Applications that monetize content matching a webpage's content may pass
      * a content URL for keyword targeting.
      */
-    contentURL: React.PropTypes.string,
+    contentURL: PropTypes.string,
 
     /**
      * You can set a publisher provided identifier (PPID) for use in frequency
      * capping, audience segmentation and targeting, sequential ad rotation, and
      * other audience-based ad delivery controls across devices.
      */
-    publisherProvidedID: React.PropTypes.string,
+    publisherProvidedID: PropTypes.string,
 
     /**
      * The user’s current location may be used to deliver more relevant ads.
      */
-    location: React.PropTypes.shape({
-      latitude: React.PropTypes.number,
-      longitude: React.PropTypes.number,
-      accuracy: React.PropTypes.number,
+    location: PropTypes.shape({
+      latitude: PropTypes.number,
+      longitude: PropTypes.number,
+      accuracy: PropTypes.number,
     }),
   }),
 
@@ -174,18 +175,18 @@ PublisherBanner.propTypes = {
 	 * const size2 = [234, 60];
 	 * adSizes = [size1, size2];
 	 */
-	adSizes: React.PropTypes.arrayOf(React.PropTypes.arrayOf(React.PropTypes.number)),
+	adSizes: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
 
 	/**
 	 * Called when ad will change its size.
 	 * Usefull when using array of custom sizes.
 	 */
-	onAdViewWillChangeAdSizeTo: React.PropTypes.func,
+	onAdViewWillChangeAdSizeTo: PropTypes.func,
 
   ...View.propTypes,
 };
 
-PublisherBanner.defaultProps = { 
+PublisherBanner.defaultProps = {
   bannerSize: 'smartBannerPortrait',
   didFailToReceiveAdWithError: () => {},
   admobDispatchAppEvent: () => {},
