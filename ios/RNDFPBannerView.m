@@ -52,7 +52,7 @@
 }
 
 -(void)loadBanner {
-    if (_adUnitID && (_bannerSize || (_bannerHeight && _bannerWidth) || _adSizes) && _onSizeChange && _onDidFailToReceiveAdWithError && (_targetingDisabled || _targeting != nil)) {
+    if (_restrictedDataProcessing && _adUnitID && (_bannerSize || (_bannerHeight && _bannerWidth) || _adSizes) && _onSizeChange && _onDidFailToReceiveAdWithError && (_targetingDisabled || _targeting != nil)) {
         GADAdSize size;
         if (_bannerHeight && _bannerWidth) {
             size = _kGADAdCustomSize;
@@ -84,6 +84,11 @@
                 request.testDevices = @[_testDeviceID];
             }
         }
+        
+        // RDP for CCPA
+        GADExtras *adNetworkExtras = [[GADExtras alloc] init];
+        adNetworkExtras.additionalParameters = @{ @"rdp" : _restrictedDataProcessing };
+        [request registerAdNetworkExtras:adNetworkExtras];
         
         if (_targeting != nil) {
             NSDictionary *customTargeting = [_targeting objectForKey:@"customTargeting"];
@@ -256,6 +261,19 @@ didReceiveAppEvent:(NSString *)name
         [self loadBanner];
     }
 }
+
+- (void)setRestrictedDataProcessing:(NSString *)rdp
+{
+    if(![rdp isEqual:_restrictedDataProcessing]) {
+        _restrictedDataProcessing = rdp;
+        if (_bannerView) {
+            [_bannerView removeFromSuperview];
+        }
+        
+        [self loadBanner];
+    }
+}
+
 - (void)setTestDeviceID:(NSString *)testDeviceID
 {
     if(![testDeviceID isEqual:_testDeviceID]) {

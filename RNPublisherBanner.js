@@ -38,7 +38,8 @@ export default class PublisherBanner extends React.Component {
 			bannerWidth,
 			bannerHeight,
 			adSizes,
-			onAdViewWillChangeAdSizeTo,
+      onAdViewWillChangeAdSizeTo,
+      restrictedDataProcessing,
     } = this.props;
     return (
       <View style={this.props.style}>
@@ -60,7 +61,8 @@ export default class PublisherBanner extends React.Component {
 					bannerWidth={bannerWidth}
 					bannerHeight={bannerHeight}
 					adSizes={adSizes}
-					onAdViewWillChangeAdSizeTo={onAdViewWillChangeAdSizeTo}
+          onAdViewWillChangeAdSizeTo={onAdViewWillChangeAdSizeTo}
+          restrictedDataProcessing={restrictedDataProcessing}
         />
       </View>
     );
