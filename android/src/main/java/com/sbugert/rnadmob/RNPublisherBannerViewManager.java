@@ -1,6 +1,8 @@
 package com.sbugert.rnadmob;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
+
+import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
@@ -15,6 +17,7 @@ import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.doubleclick.AppEventListener;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
@@ -35,6 +38,7 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactViewGro
   public static final String PROP_AD_UNIT_ID = "adUnitID";
   public static final String PROP_TARGETING = "targeting";
   public static final String PROP_TEST_DEVICE_ID = "testDeviceID";
+  public static final String PROP_RESTRICTED_DATA_PROCESSING = "restrictedDataProcessing";
 
   private static final String TARGETING_CUSTOM_TARGETING = "customTargeting";
   private static final String TARGETING_CATEGORY_EXCLUSIONS = "categoryExclusions";
@@ -46,6 +50,7 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactViewGro
   private static final String TARGETING_PUBLISHER_PROVIDED_ID = "publisherProviderID";
 
   private ReadableMap targeting;
+  private String restrictedDataProcessing;
   private String testDeviceID = null;
 
   public enum Events {
@@ -252,6 +257,12 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactViewGro
     loadAd(newAdView);
   }
 
+  @ReactProp(name = PROP_RESTRICTED_DATA_PROCESSING)
+  public void setRestrictedDataProcessing(final ReactViewGroup view, final String rdp) {
+    // store old banner size (even if not yet present and thus null)
+    this.restrictedDataProcessing = rdp;
+  }
+
   @ReactProp(name = PROP_TARGETING)
   public void setTargeting(final ReactViewGroup view, final ReadableMap targeting) {
     this.targeting = targeting;
@@ -271,6 +282,11 @@ public class RNPublisherBannerViewManager extends SimpleViewManager<ReactViewGro
         } else {
           adRequestBuilder = adRequestBuilder.addTestDevice(testDeviceID);
         }
+      }
+      if (restrictedDataProcessing != null) {
+        Bundle networkExtrasBundle = new Bundle();
+        networkExtrasBundle.putString("rdp", restrictedDataProcessing);
+        adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, networkExtrasBundle);
       }
       if (targeting != null) {
         if (targeting.hasKey(TARGETING_CUSTOM_TARGETING)) {
